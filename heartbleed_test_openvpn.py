@@ -21,6 +21,7 @@ packetid = 0
 
 options = OptionParser(usage='%prog server [options]', description='Test for TLS heartbeat vulnerability on OpenVPN Server (CVE-2014-0160)')
 options.add_option('-p', '--port', type='int', default=1194, help='Port to test (default: 1194)')
+options.add_option('-t', '--timeout', type='float', default=5, help='Set timeout in seconds (defualt: 5)')
 
 def h2bin(x):
     return x.replace(' ', '').replace('\n', '').decode('hex')
@@ -154,6 +155,7 @@ def main():
     target = args[0]
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(opts.timeout)
     sys.stdout.flush()
     s.connect((target, opts.port))
     sys.stdout.flush()
